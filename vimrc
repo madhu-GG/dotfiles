@@ -1,5 +1,7 @@
 "comments start with a double qoute
 
+colorscheme industry
+
 "show line numbers on the left
 set number
 
