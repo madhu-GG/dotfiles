@@ -34,6 +34,7 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 Plugin 'flazz/vim-colorschemes'
 
+Plugin 'ycm-core/YouCompleteMe'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -67,7 +68,8 @@ set expandtab
 "some convenience when searching
 "incsearch will move the cursor as the search string is being typed.
 "hlsearch will highlight all occurances on the screen.
-set incsearch hlsearch
+set incsearch
+set hlsearch
 
 " colorscheme
 colorscheme Benokai
