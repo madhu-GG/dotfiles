@@ -55,11 +55,14 @@ set number
 "tab will show as 4 spaces
 set shiftwidth=4 tabstop=4 softtabstop=4
 
+"smartindent tries to indent code
+set smartindent
+
 "enable syntax highlighting
 syntax on
 
 "tab key will insert spaces instead of tabs
-"set expandtab
+set expandtab
 
 "some convenience when searching
 "incsearch will move the cursor as the search string is being typed.
