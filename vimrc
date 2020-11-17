@@ -72,4 +72,4 @@ set incsearch
 set hlsearch
 
 " colorscheme
-colorscheme Benokai
+colorscheme gruvbox
