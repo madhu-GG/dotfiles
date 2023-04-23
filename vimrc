@@ -77,8 +77,15 @@ set termguicolors
 " set background to dark
 set bg=dark
 
+" set list changes for neovim
+set listchars=tab:<->,trail:-,eol:$,space:\.
+
 " set italics
 let g:gruvbox_italic=1
+
+" set gruvbox contrast
+let g:gruvbox_contrast_dark="medium"
+let g:gruvbox_contrast_light="soft"
 
 " colorscheme
 colorscheme gruvbox
