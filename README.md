@@ -1,3 +1,15 @@
+# My Dotfiles
+
+This is a collection of dotfiles that I use regularly.
+
+## Table of Contents
+
+1. [vim](#vim)
+2. [neovim](#neovim)
+3. [Tmux](#tmux)
+
+## Vim
+
 This is my vimrc file for vim. Should add more configuration as i explore vim.
 
 + Added Vundle Plugin Manager
@@ -14,3 +26,11 @@ This is my vimrc file for vim. Should add more configuration as i explore vim.
 * YouCompleteMe:
     cd ~/.vim/bundle/YouCompleteMe
     ./install.py --clang-completer
+
+## Neovim
+
+TBD
+
+## Tmux
+
+TBD
