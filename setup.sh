@@ -15,11 +15,30 @@ function vim() {
 
 # setup tmux
 function tmux() {
-	if [ -f ~/.tmux.conf ]; then
-		cp ~/.tmux.conf ~/.tmux.conf.backup
+	set -x;
+	if [ ! -d "$XDG_CONFIG_HOME" ]; then
+		DEST_DIR="$HOME/.config/tmux";
+		mkdir -p "$DEST_DIR";
 	fi
 
-	cp tmux.conf ~/.tmux.conf
+	DEST="$DEST_DIR/tmux.conf";
+	if [ -f "$DEST" ]; then
+		cp "$DEST" "$DEST.backup";
+	fi
+
+	cp tmux.conf "$DEST";
+
+	# setup some aliases for tmux commands
+	echo "alias tmux='tmux -u'" > ~/.bashrc_tmux
+	echo "alias tn='tmux new-session'" >> ~/.bashrc_tmux
+	echo "alias ta='tmux attach-session'" >> ~/.bashrc_tmux
+
+	echo "
+if [ -f ~/.bashrc_tmux ]; then
+	source ~/.bashrc_tmux;
+fi" >> ~/.bashrc
+
+	set +x;
 }
 
 # setup neovim
