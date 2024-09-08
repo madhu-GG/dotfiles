@@ -22,17 +22,19 @@ This is my vimrc file for vim. Should add more configuration as i explore vim.
 
 ### Instructions to install
 
-* run setup.sh
+* run `./setup.sh vim`
 * YouCompleteMe:
+```
     cd ~/.vim/bundle/YouCompleteMe
     ./install.py --clang-completer
-
+```
 ## Neovim
 
-* run setup.sh
+* run `./setup.sh neovim`
 * open neovim (nvim)
 * type in ":LazyInstall" to install the plugins
 
 ## Tmux
 
-TBD
+* run `./setup.sh tmux`
+* start tmux session with `tmux new-session [-s <name>]`
