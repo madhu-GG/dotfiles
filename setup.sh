@@ -43,16 +43,23 @@ fi" >> ~/.bashrc
 
 # setup neovim
 function neovim() {
-	if [ ! -d ~/.config/nvim ]; then
-		echo "NVIM Config directory missing";
-		mkdir -p ~/.config/nvim/lua/plugins;
-		cp -R nvim ~/.config;
+	if [ -d ~/.config/nvim ]; then
+		echo "NVIM Config directory exists, moving it 'nvim_old' ...";
+		mv ~/.config/nvim ~/.config/nvim_old
 	fi
+
+	cp -R nvim ~/.config;
 }
 
 # display command usage:
 function usage() {
 	echo "usage: $0 <program> [program-options]";
+
+	echo "";
+	echo "<program> Currently supports";
+	echo "    vim";
+	echo "    tmux";
+	echo "    neovim";
 }
 
 case $1 in
