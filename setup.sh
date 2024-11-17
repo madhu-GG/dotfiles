@@ -16,6 +16,7 @@ function vim() {
 # setup tmux
 function tmux() {
 	set -x;
+	VERSION=$1
 	if [ ! -d "$XDG_CONFIG_HOME" ]; then
 		DEST_DIR="$HOME/.config/tmux";
 		mkdir -p "$DEST_DIR";
@@ -26,17 +27,33 @@ function tmux() {
 		cp "$DEST" "$DEST.backup";
 	fi
 
-	cp tmux.conf "$DEST";
+	case $VERSION in
+	1)
+		tmux_config='tmux.conf'
+		;;
+	2)
+		tmux_config='tmux.conf.2'
+		;;
+	*)  tmux_config='tmux.conf'
+		;;
+	esac
+	
+	echo "Selected ${tmux_config}";
+	cp "${tmux_config}" "$DEST";
 
 	# setup some aliases for tmux commands
+	if ! [ -f ~/.bashrc_tmux ]; then
 	echo "alias tmux='tmux -u'" > ~/.bashrc_tmux
 	echo "alias tn='tmux new-session'" >> ~/.bashrc_tmux
 	echo "alias ta='tmux attach-session'" >> ~/.bashrc_tmux
-
-	echo "
+	if ! grep -q "bashrc_tmux" ~/.bashrc; then
+    echo "
 if [ -f ~/.bashrc_tmux ]; then
 	source ~/.bashrc_tmux;
 fi" >> ~/.bashrc
+    fi
+	source ~/.bashrc
+	fi
 
 	set +x;
 }
@@ -60,6 +77,11 @@ function usage() {
 	echo "    vim";
 	echo "    tmux";
 	echo "    neovim";
+
+	echo "program-options";
+	echo "    tmux";
+	echo "      version: 1 or 2 -> copies either tmux.conf or tmux.conf.2,";
+	echo "      default is 1";
 }
 
 case $1 in
@@ -67,7 +89,7 @@ case $1 in
 		vim;
 		;;
 	'tmux')
-		tmux;
+		tmux $2;
 		;;
 	'neovim')
 		neovim;
