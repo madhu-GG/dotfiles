@@ -15,7 +15,10 @@ function vim() {
 
 # setup tmux
 function tmux() {
-	set -x;
+	if (( $DEBUG == 1 )); then
+		set -x;
+	fi
+
 	VERSION=$1
 	if [ ! -d "$XDG_CONFIG_HOME" ]; then
 		DEST_DIR="$HOME/.config/tmux";
@@ -43,19 +46,25 @@ function tmux() {
 
 	# setup some aliases for tmux commands
 	if ! [ -f ~/.bashrc_tmux ]; then
-	echo "alias tmux='tmux -u'" > ~/.bashrc_tmux
-	echo "alias tn='tmux new-session'" >> ~/.bashrc_tmux
-	echo "alias ta='tmux attach-session'" >> ~/.bashrc_tmux
-	if ! grep -q "bashrc_tmux" ~/.bashrc; then
-    echo "
+		cp bashrc_tmux ~/.bashrc_tmux
+		echo "DONE copy: bashrc_tmux to ~/.bashrc_tmux"
+		if ! grep -q "bashrc_tmux" ~/.bashrc; then
+			echo "
 if [ -f ~/.bashrc_tmux ]; then
 	source ~/.bashrc_tmux;
 fi" >> ~/.bashrc
-    fi
-	source ~/.bashrc
+			echo "DONE modify: source ~/.bashrc_tmux from ~/.bashrc"
+		else
+			echo "SKIP modify: ~/.bashrc already sources ~/.bashrc_tmux"
+		fi
+		source ~/.bashrc
+	else
+		echo "SKIP copy: bashrc_tmux already exists"
 	fi
 
-	set +x;
+	if (( $DEBUG == 1 )); then
+		set +x;
+	fi
 }
 
 # setup neovim
@@ -70,7 +79,7 @@ function neovim() {
 
 # display command usage:
 function usage() {
-	echo "usage: $0 <program> [program-options]";
+	echo "usage: $0 <program> [program-options] [debug]";
 
 	echo "";
 	echo "<program> Currently supports";
@@ -83,6 +92,15 @@ function usage() {
 	echo "      version: 1 or 2 -> copies either tmux.conf or tmux.conf.2,";
 	echo "      default is 1";
 }
+
+case $3 in
+	'debug':
+		DEBUG=1;
+		;;
+	*)
+		DEBUG=0;
+		;;
+esac
 
 case $1 in
 	'vim')
