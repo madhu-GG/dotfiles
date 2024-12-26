@@ -72,9 +72,10 @@ function neovim() {
 	if [ -d ~/.config/nvim ]; then
 		echo "NVIM Config directory exists, moving it 'nvim_old' ...";
 		mv ~/.config/nvim ~/.config/nvim_old
+	else
+		echo "Copying nvim config to .config/";
+		cp -R nvim ~/.config;
 	fi
-
-	cp -R nvim ~/.config;
 }
 
 # display command usage:
