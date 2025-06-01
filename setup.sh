@@ -95,7 +95,7 @@ function usage() {
 }
 
 case $3 in
-	'debug':
+	'debug')
 		DEBUG=1;
 		;;
 	*)
