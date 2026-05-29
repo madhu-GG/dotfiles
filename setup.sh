@@ -19,18 +19,18 @@ function tmux() {
 		set -x;
 	fi
 
-	VERSION=$1
-	if [ ! -d "$XDG_CONFIG_HOME" ]; then
-		DEST_DIR="$HOME/.config/tmux";
-		mkdir -p "$DEST_DIR";
+	version=$1
+	if [ ! -d "$xdg_config_home" ]; then
+		dest_dir="$home/.config/tmux";
+		mkdir -p "$dest_dir";
 	fi
 
-	DEST="$DEST_DIR/tmux.conf";
-	if [ -f "$DEST" ]; then
-		cp "$DEST" "$DEST.backup";
+	dest="$dest_dir/tmux.conf";
+	if [ -f "$dest" ]; then
+		cp "$dest" "$dest.backup";
 	fi
 
-	case $VERSION in
+	case $version in
 	1)
 		tmux_config='tmux.conf'
 		;;
@@ -41,25 +41,56 @@ function tmux() {
 		;;
 	esac
 	
-	echo "Selected ${tmux_config}";
-	cp "${tmux_config}" "$DEST";
+	echo "selected ${tmux_config}";
+	cp "${tmux_config}" "$dest";
 
 	# setup some aliases for tmux commands
 	if ! [ -f ~/.bashrc_tmux ]; then
 		cp bashrc_tmux ~/.bashrc_tmux
-		echo "DONE copy: bashrc_tmux to ~/.bashrc_tmux"
+		echo "done copy: bashrc_tmux to ~/.bashrc_tmux"
 		if ! grep -q "bashrc_tmux" ~/.bashrc; then
 			echo "
 if [ -f ~/.bashrc_tmux ]; then
 	source ~/.bashrc_tmux;
 fi" >> ~/.bashrc
-			echo "DONE modify: source ~/.bashrc_tmux from ~/.bashrc"
+			echo "done modify: source ~/.bashrc_tmux from ~/.bashrc"
 		else
-			echo "SKIP modify: ~/.bashrc already sources ~/.bashrc_tmux"
+			echo "skip modify: ~/.bashrc already sources ~/.bashrc_tmux"
 		fi
 		source ~/.bashrc
 	else
-		echo "SKIP copy: bashrc_tmux already exists"
+		echo "skip copy: bashrc_tmux already exists"
+	fi
+
+	if (( $DEBUG == 1 )); then
+		set +x;
+	fi
+}
+
+function alacritty() {
+	echo "Setting up alacritty.toml configuration...";
+	if (( $DEBUG == 1 )); then
+		set -x;
+	fi
+
+	dest_dir="${HOME}/.config/alacritty";
+	if [ ! -d "${XDG_CONFIG_HOME}" ]; then
+		mkdir -p "${dest_dir}";
+	fi
+
+	dest="${dest_dir}/alacritty.toml";
+	if [ -f "$dest" ]; then
+		echo "Found existing alacritty.toml at ${dest_dir}...";
+		cp "${dest}" "${dest}.backup";
+	fi
+
+	alacritty_config="alacritty/alacritty.toml";
+	cp "${alacritty_config}" "$dest";
+
+	if [ -f "${HOME}/alacritty.toml" ]; then
+		echo "Skipping linking... symlink exists";
+	else
+		ln -s "${dest}" "${HOME}/alacritty.toml";
 	fi
 
 	if (( $DEBUG == 1 )); then
@@ -87,6 +118,8 @@ function usage() {
 	echo "    vim";
 	echo "    tmux";
 	echo "    neovim";
+	echo "    alacritty";
+    echo "";
 
 	echo "program-options";
 	echo "    tmux";
@@ -112,6 +145,9 @@ case $1 in
 		;;
 	'neovim')
 		neovim;
+		;;
+	'alacritty')
+		alacritty;
 		;;
 	*)
 		usage;
