@@ -16,38 +16,40 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins")
 
-local lspconfig = require'lspconfig';
-lspconfig.clangd.setup{}
+-- local lspconfig = require'lspconfig';
+-- lspconfig.clangd.setup{}
+-- clangd
 
-local on_attach = function(client)
-    require'completion'.on_attach(client)
-end
 
-lspconfig.rust_analyzer.setup({
-    on_attach = on_attach,
-    settings = {
-        ["rust-analyzer"] = {
-            imports = {
-                granularity = {
-                    group = "module",
-                },
-                prefix = "self",
-            },
-            cargo = {
-                buildScripts = {
-                    enable = true,
-                },
-            },
-            procMacro = {
-                enable = true
-            },
-        }
-    }
-})
-
+--local on_attach = function(client)
+--    require'completion'.on_attach(client)
+--end
+--
+--lspconfig.rust_analyzer.setup({
+--    on_attach = on_attach,
+--    settings = {
+--        ["rust-analyzer"] = {
+--            imports = {
+--                granularity = {
+--                    group = "module",
+--                },
+--                prefix = "self",
+--            },
+--            cargo = {
+--                buildScripts = {
+--                    enable = true,
+--                },
+--            },
+--            procMacro = {
+--                enable = true
+--            },
+--        }
+--    }
+--})
+--
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "c", "rust", "lua", "vim", "vimdoc", "query" },
+  ensure_installed = { "python", "go", "c", "rust", "lua", "vim", "vimdoc", "query" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -63,7 +65,7 @@ require'nvim-treesitter.configs'.setup {
   -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
 
   highlight = {
-    enable = true,
+    enable = false,
 
     -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
     -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
@@ -92,6 +94,32 @@ vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 -- end of lazy package manager
+
+local lsps = {
+	{ "rust_analyzer" },
+	{ "gopls" },
+	{ "clangd", {
+			cmd = { 'clangd' },
+			root_markers = { '.clangd', 'compile_commands.json' },
+			filetypes = { 'c', 'cpp', 'h' },
+		}
+	},
+	{ "ty", {
+			cmd = { 'ty', 'server' },
+			filetypes = { 'python' },
+			root_markers = { 'pyproject.toml', '__init__.py', '.git' }
+		}
+	}
+}
+
+for _, lsp in pairs(lsps) do
+	local name, config = lsp[1], lsp[2]
+	if config then
+		vim.lsp.config(name, config)
+	end
+	vim.lsp.enable(name)
+end
+
 
 -- colorscheme
 vim.opt.termguicolors=true
