@@ -20,8 +20,8 @@ function tmux() {
 	fi
 
 	version=$1
-	if [ ! -d "$xdg_config_home" ]; then
-		dest_dir="$home/.config/tmux";
+	if [ ! -d "${XDG_CONFIG_HOME}" ]; then
+		dest_dir="${HOME}/.config/tmux";
 		mkdir -p "$dest_dir";
 	fi
 
