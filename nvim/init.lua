@@ -1,3 +1,6 @@
+-- plugins
+
+-- lazy package manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -17,51 +20,59 @@ require("lazy").setup("plugins")
 -- server flags. Must come AFTER lazy.setup so that cmp_nvim_lsp is installed.
 require('clangd')
 
-vim.cmd([[ colorscheme peachpuff ]])
-vim.opt.number = true
--- vim.opt.relativenumber = true
-vim.opt.background = "light"
+vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
+vim.lsp.inline_completion.enable(not vim.lsp.inline_completion.is_enabled())
 
-local spacing = 4
-vim.opt.tabstop = spacing
-vim.opt.softtabstop = spacing
-vim.opt.shiftwidth = spacing
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+-- end of lazy package manager
 
-vim.opt.hlsearch = true
-vim.opt.incsearch = true
-vim.opt.expandtab = true
+-- disable language provider support (lua and vimscript plugins only)
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
 
-vim.opt.listchars = { space = '.', tab = '| ', trail = '_', extends = '>', precedes = '<', nbsp = '~', eol = '$' }
--- osc stuff
+-- end of plugin defs
 
-function copy()
-  if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
-    require('osc52').copy_register('+')
-  end
-end
-
-vim.cmd([[ colorscheme peachpuff ]])
-vim.opt.number = true
--- vim.opt.relativenumber = true
-vim.opt.background = "light"
-
-local spacing = 4
-vim.opt.tabstop = spacing
-vim.opt.softtabstop = spacing
-vim.opt.shiftwidth = spacing
-
-vim.opt.hlsearch = true
-vim.opt.incsearch = true
-vim.opt.expandtab = true
-
-vim.opt.listchars = { space = '.', tab = '| ', trail = '_', extends = '>', precedes = '<', nbsp = '~', eol = '$' }
--- osc stuff
-
-function copy()
-  if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
-    require('osc52').copy_register('+')
-  end
-end
-
+-- functionality
+-- Harpoon
 vim.keymap.set("n", "<leader>ht", function() toggle_telescope(harpoon:list()) end,
     { desc = "Open harpoon window" })
+
+
+-- osc stuff
+
+function copy()
+  if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
+    require('osc52').copy_register('+')
+  end
+end
+
+-- vim functionality
+local spacing = 4
+vim.opt.tabstop = spacing
+vim.opt.softtabstop = spacing
+vim.opt.shiftwidth = spacing
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+vim.opt.expandtab = false
+vim.opt.listchars = { space = '.', tab = '| ', trail = '_', extends = '>', precedes = '<', nbsp = '~', eol = '$' }
+
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+
+vim.opt.number = true
+vim.opt.relativenumber = false
+
+-- vim appearance
+-- colorscheme
+vim.opt.termguicolors=true
+vim.opt.background="dark"
+vim.g.gruvbox_contrast_dark="hard"
+vim.g.gruvbox_contrast_light="soft"
+vim.cmd [[ colorscheme unokai ]]
+
+
