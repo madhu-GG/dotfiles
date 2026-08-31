@@ -19,9 +19,10 @@ require("lazy").setup("plugins")
 -- clangd: standalone config with ctags-style keymaps, cmp capabilities, and
 -- server flags. Must come AFTER lazy.setup so that cmp_nvim_lsp is installed.
 require('clangd')
+require('pylsp')
 
-vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
-vim.lsp.inline_completion.enable(not vim.lsp.inline_completion.is_enabled())
+-- vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
+-- vim.lsp.inline_completion.enable(not vim.lsp.inline_completion.is_enabled())
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
@@ -51,6 +52,12 @@ function copy()
   end
 end
 
+local osc52 = require('osc52')
+
+vim.keymap.set('n', '<leader>c', osc52.copy_operator, {expr = true})
+vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
+vim.keymap.set('v', '<leader>c', osc52.copy_visual)
+
 -- vim functionality
 local spacing = 4
 vim.opt.tabstop = spacing
@@ -74,5 +81,4 @@ vim.opt.background="dark"
 vim.g.gruvbox_contrast_dark="hard"
 vim.g.gruvbox_contrast_light="soft"
 vim.cmd [[ colorscheme unokai ]]
-
 
