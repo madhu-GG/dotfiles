@@ -21,9 +21,6 @@ require("lazy").setup("plugins")
 require('clangd')
 require('pylsp')
 
--- vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
--- vim.lsp.inline_completion.enable(not vim.lsp.inline_completion.is_enabled())
-
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
@@ -78,13 +75,22 @@ vim.opt.incsearch = true
 vim.opt.expandtab = false
 vim.opt.listchars = { space = '.', tab = '| ', trail = '_', extends = '>', precedes = '<', nbsp = '~', eol = '$' }
 
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
 vim.opt.number = true
 vim.opt.relativenumber = false
 
+vim.opt.completeopt = "menu,menuone,noselect,popup" -- Ensures the menu appears even for a single match and uses the native popup window.
+vim.opt.autocomplete = true
+
 -- vim appearance
+-- Prevents showing extra messages when using completion
+vim.opt.shortmess:append("c")
+-- Sets the height of the command line area at the bottom
+vim.opt.cmdheight = 2
 -- colorscheme
 vim.opt.termguicolors=true
 vim.opt.background="dark"
