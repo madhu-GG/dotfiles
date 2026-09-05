@@ -45,19 +45,29 @@ vim.keymap.set("n", "<leader>ht", function() toggle_telescope(harpoon:list()) en
 
 
 -- osc stuff
-
-function copy()
-  if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
-    require('osc52').copy_register('+')
-  end
+local function osc52_copy(text)
+  local text_b64 = encode_base64(text)
+  local osc = string.format('%s]52;c;%s%s', string.char(0x1b), text_b64, string.char(0x07))
+  io.stderr:write(osc)
 end
 
-local osc52 = require('osc52')
-
-vim.keymap.set('n', '<leader>c', osc52.copy_operator, {expr = true})
-vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
-vim.keymap.set('v', '<leader>c', osc52.copy_visual)
-
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    osc52_copy(vim.fn.getreg(vim.v.event.regname))
+  end
+})
+--function copy()
+--  if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
+--    require('osc52').copy_register('+')
+--  end
+--end
+--
+--local osc52 = require('osc52')
+--
+--vim.keymap.set('n', '<leader>c', osc52.copy_operator, {expr = true})
+--vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
+--vim.keymap.set('v', '<leader>c', osc52.copy_visual)
+--
 -- vim functionality
 local spacing = 4
 vim.opt.tabstop = spacing
