@@ -20,7 +20,6 @@ require("lazy").setup("plugins")
 -- server flags. Must come AFTER lazy.setup so that cmp_nvim_lsp is installed.
 require('clangd')
 require('pylsp')
-
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
